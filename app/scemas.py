@@ -100,3 +100,5 @@ class Product(BaseProduct):
 
     id: Annotated[int, Field(description="Уникальный идентификатор товара")]
     is_active: Annotated[bool, Field(description="Активность товара")]
+
+    model_config = ConfigDict(from_attributes=True)
