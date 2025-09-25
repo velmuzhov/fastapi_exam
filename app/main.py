@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import categories
+from app.routers import categories, products
 
 
 app = FastAPI(
@@ -8,8 +8,9 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# Подключение маршрутов категорий
+# Подключение маршрутов категорий и товаров
 app.include_router(categories.router)
+app.include_router(products.router)
 
 
 # Корневой endpoint для проверки
