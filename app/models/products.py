@@ -20,6 +20,6 @@ class Product(Base):
     stock: Mapped[int] = mapped_column(Integer, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
 
-    category_id: Mapped[int] = mapped_column(ForeignKey(column="categories.id", on_delete="CASCADE"), nullable=False) 
+    category_id: Mapped[int] = mapped_column(ForeignKey(column="categories.id", ondelete="CASCADE"), nullable=False) 
 
     category: Mapped["Category"] = relationship("Category", back_populates="products")
