@@ -10,8 +10,8 @@ class BaseCategory(BaseModel):
     name: Annotated[
         str,
         Field(
-            max_length=3,
-            min_length=50,
+            min_length=3,
+            max_length=50,
             description="Название категории (3-50 символов)",
         ),
     ]
