@@ -68,9 +68,9 @@ class BaseProduct(BaseModel):
     ]
     price: Annotated[float, Field(gt=0, description="Цена товара (больше 0)")]
     image_url: Annotated[
-        HttpUrl,
+        HttpUrl | None,
         Field(
-            default=0,
+            default=None,
             max_length=200,
             description="URL изображения товара",
         ),
