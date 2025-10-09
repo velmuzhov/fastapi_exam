@@ -22,8 +22,17 @@ async def get_all_products(db: Session = Depends(get_db)):
     """
     Возвращает список всех товаров.
     """
+    # products = db.scalars(
+    #     select(ProductModel).where(ProductModel.is_active == True)
+    # ).all()
+
     products = db.scalars(
-        select(ProductModel).where(ProductModel.is_active == True)
+        select(ProductModel)
+        .join(CategoryModel)
+        .where(
+            ProductModel.is_active == True,
+            CategoryModel.is_active == True,
+        )
     ).all()
 
     return products
@@ -50,7 +59,6 @@ async def create_product(product: ProductCreate, db: Session = Depends(get_db)):
             detail="Category not found",
         )
 
-    print(product.model_dump())
 
     product_to_db = ProductModel(**product.model_dump())
     db.add(product_to_db)
