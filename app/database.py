@@ -1,3 +1,21 @@
+from sqlalchemy import create_engine, Engine
+from sqlalchemy.orm import sessionmaker
+
+
+# ------- Синхронное подключение к SQLite -------
+
+DATABASE_URL: str = "sqlite:///ecommerce.db"
+
+engine: Engine = create_engine(
+    url=DATABASE_URL,
+    echo=True,
+)
+
+SessionLocal = sessionmaker(bind=engine)
+
+
+# ------- асинхронное подключение к PostgreSQL -------
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
@@ -15,3 +33,4 @@ async_session_maker = async_sessionmaker(
 
 class Base(DeclarativeBase):
     pass
+
