@@ -110,7 +110,4 @@ async def delete_category(
 
     await db.commit()
 
-    return {
-        "status": "success",
-        "message": "Category marked as inactive",
-    }
+    return category
