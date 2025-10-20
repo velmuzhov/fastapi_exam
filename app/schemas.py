@@ -116,6 +116,8 @@ class BaseUser(BaseModel):
 class UserCreate(BaseUser):
     password: SecretStr = Field(min_length=8, description="Пароль (минимум 8 символов)")
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class User(BaseUser):
     id: int
