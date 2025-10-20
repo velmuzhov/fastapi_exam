@@ -1,5 +1,5 @@
 from typing import Annotated
-from pydantic import BaseModel, Field, ConfigDict, HttpUrl
+from pydantic import BaseModel, Field, ConfigDict, HttpUrl, EmailStr, SecretStr
 
 
 class BaseCategory(BaseModel):
@@ -100,5 +100,25 @@ class Product(BaseProduct):
 
     id: Annotated[int, Field(description="Уникальный идентификатор товара")]
     is_active: Annotated[bool, Field(description="Активность товара")]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class BaseUser(BaseModel):
+    email: EmailStr = Field(description="Email пользователя")
+    role: str = Field(
+        default="buyer",
+        pattern=r"^(buyer|seller)$",
+        description="Роль: 'byuer' или 'seller'",
+    )
+
+
+class UserCreate(BaseUser):
+    password: SecretStr = Field(min_length=8, description="Пароль (минимум 8 символов)")
+
+
+class User(BaseUser):
+    id: int
+    is_active: bool
 
     model_config = ConfigDict(from_attributes=True)
