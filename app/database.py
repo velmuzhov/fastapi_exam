@@ -1,17 +1,24 @@
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker
+from app.config import (
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_DB,
+    POSTGRES_PORT,
+    POSTGRES_HOST
+)
 
 
 # ------- Синхронное подключение к SQLite -------
 
-DATABASE_URL: str = "sqlite:///ecommerce.db"
+# DATABASE_URL: str = "sqlite:///ecommerce.db"
 
-engine: Engine = create_engine(
-    url=DATABASE_URL,
-    echo=True,
-)
+# engine: Engine = create_engine(
+#     url=DATABASE_URL,
+#     echo=True,
+# )
 
-SessionLocal = sessionmaker(bind=engine)
+# SessionLocal = sessionmaker(bind=engine)
 
 
 # ------- асинхронное подключение к PostgreSQL -------
@@ -19,7 +26,7 @@ SessionLocal = sessionmaker(bind=engine)
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-DATABASE_URL = "postgresql+asyncpg://ecommerce_user:1234@localhost:5750/ecommerce_db"
+DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 async_engine = create_async_engine(
     url=DATABASE_URL,
