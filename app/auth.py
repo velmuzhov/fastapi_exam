@@ -46,7 +46,7 @@ def create_access_token(data: dict):
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    token: str = Depends(oauth2_scheme), # извлекает токен из заголовка с помощью OAuth2PasswordBearer
     db: AsyncSession = Depends(get_async_db),
 ):
     """
@@ -73,7 +73,7 @@ async def get_current_user(
             detail="Token has expired",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except jwt.PyJWTError:
+    except jwt.PyJWTError: # базовый класс, перехватывает все остальные ошибки
         raise credentials_exception
 
     result = await db.scalars(
