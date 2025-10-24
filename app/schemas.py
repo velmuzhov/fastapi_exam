@@ -155,7 +155,7 @@ class BaseReview(BaseModel):
     is_active: Annotated[
         bool,
         Field(
-            "Активен ли отзыв (для мягкого удаления)"б
+            "Активен ли отзыв (для мягкого удаления)",
         )
     ]
 
