@@ -1,4 +1,5 @@
 from typing import Annotated
+from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict, HttpUrl, EmailStr, SecretStr
 
 
@@ -122,5 +123,52 @@ class UserCreate(BaseUser):
 class User(BaseUser):
     id: int
     is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)
+
+class BaseReview(BaseModel):
+    """
+    Базовая модель для отзывов. Служит для наследования. Не должна использоваться напрямую.
+    """
+    user_id: Annotated[
+        int,
+        Field(description="ID пользователя, оставившего отзыв"),
+    ]
+    product_id: Annotated[
+        int,
+        Field(description="ID товара, к которому относится отзыв")
+    ]
+    comment: Annotated[
+        str | None,
+        Field(
+            description="Текст отзыва, необязательное",
+            default=None,
+        )
+    ]
+    comment_date: Annotated[
+        datetime,
+        Field(
+            description="Дата и время создания отзыва, необязательное",
+            default_factory=datetime.now,
+        )
+    ]
+    is_active: Annotated[
+        bool,
+        Field(
+            "Активен ли отзыв (для мягкого удаления)"б
+        )
+    ]
+
+class ReviewCreate(BaseReview):
+    """
+    Входная модель для создания и обновления отзывов
+    """
+    ...
+
+class Review(BaseReview):
+    """
+    Модель для возврата отзыва в HTTP-ответах
+    """
+    id: int
 
     model_config = ConfigDict(from_attributes=True)
