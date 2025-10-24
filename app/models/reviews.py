@@ -13,6 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
+
 if TYPE_CHECKING:
     from app.models.users import User
     from app.models.products import Product
@@ -47,10 +48,6 @@ class Review(Base):
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         default=True,
-    )
-    author: Mapped["User"] = relationship(
-        "User",
-        back_populates="reviews",
     )
     product: Mapped["Product"] = relationship(
         "Product",

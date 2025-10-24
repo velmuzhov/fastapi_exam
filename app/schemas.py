@@ -69,7 +69,7 @@ class BaseProduct(BaseModel):
     ]
     price: Annotated[float, Field(gt=0, description="Цена товара (больше 0)")]
     image_url: Annotated[
-        HttpUrl | None,
+        str | None,
         Field(
             default=None,
             max_length=200,
@@ -101,6 +101,7 @@ class Product(BaseProduct):
 
     id: Annotated[int, Field(description="Уникальный идентификатор товара")]
     is_active: Annotated[bool, Field(description="Активность товара")]
+    rating: Annotated[float, Field(description="Средний рейтинг товара")]
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -126,49 +127,63 @@ class User(BaseUser):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class BaseReview(BaseModel):
     """
     Базовая модель для отзывов. Служит для наследования. Не должна использоваться напрямую.
     """
-    user_id: Annotated[
-        int,
-        Field(description="ID пользователя, оставившего отзыв"),
-    ]
+
     product_id: Annotated[
-        int,
-        Field(description="ID товара, к которому относится отзыв")
+        int, Field(description="ID товара, к которому относится отзыв")
     ]
     comment: Annotated[
         str | None,
         Field(
             description="Текст отзыва, необязательное",
             default=None,
-        )
+        ),
+    ]
+    grade: Annotated[
+        int,
+        Field(
+            description="Оценка товара, целое число от 1 до 5",
+            ge=1,
+            le=5,
+        ),
+    ]
+
+
+
+class ReviewCreate(BaseReview):
+    """
+    Входная модель для создания и обновления отзывов
+    """
+
+    ...
+
+
+class Review(BaseReview):
+    """
+    Модель для возврата отзыва в HTTP-ответах
+    """
+
+    id: int
+    user_id: Annotated[
+        int,
+        Field(description="ID пользователя, оставившего отзыв"),
     ]
     comment_date: Annotated[
         datetime,
         Field(
             description="Дата и время создания отзыва, необязательное",
             default_factory=datetime.now,
-        )
+        ),
     ]
     is_active: Annotated[
         bool,
         Field(
-            "Активен ли отзыв (для мягкого удаления)",
-        )
+            description="Активен ли отзыв (для мягкого удаления)",
+        ),
     ]
-
-class ReviewCreate(BaseReview):
-    """
-    Входная модель для создания и обновления отзывов
-    """
-    ...
-
-class Review(BaseReview):
-    """
-    Модель для возврата отзыва в HTTP-ответах
-    """
-    id: int
 
     model_config = ConfigDict(from_attributes=True)
