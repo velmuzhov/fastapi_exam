@@ -1,7 +1,7 @@
 [project]
-name = "fastapi-perminov"
+name = "fastapi-ecommerce"
 version = "0.1.0"
-description = "Add your description here"
+description = "Internet-shop with fastapi, sqlalchemy in async way"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
