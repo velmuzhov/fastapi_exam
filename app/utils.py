@@ -7,6 +7,9 @@ from app.models.products import Product
 
 
 async def update_product_rating(db: AsyncSession, product_id: int) -> None:
+    """
+    Обновляет рейтинг продукта на основе среднего оценок из активных отзывов о нем.
+    """
     result = await db.execute(
         select(func.avg(Review.grade)).where(
             Review.product_id == product_id,
